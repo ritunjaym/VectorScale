@@ -207,6 +207,17 @@ Advanced query routing with partition pruning and index selection. See [SEMANTIC
 
 ---
 
+## 🧪 A/B Testing
+
+Rigorous experimentation on query optimization. See [AB_TESTING.md](docs/AB_TESTING.md).
+
+**Example: FAISS nprobe optimization**
+- Tested: nprobe = 5, 10, 20
+- Winner: nprobe=10 (best latency/recall trade-off)
+- Impact: 38% speedup vs nprobe=20, only 3% recall loss
+
+---
+
 ## 🚀 Quick Start (One Command)
 
 ```bash
