@@ -5,7 +5,7 @@ Merges new data, skips unchanged records.
 """
 from delta.tables import DeltaTable
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, current_timestamp
+from pyspark.sql.functions import current_timestamp
 import argparse
 
 

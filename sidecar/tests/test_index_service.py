@@ -4,17 +4,17 @@ Tests FAISS index loading, search, and reload functionality.
 """
 import sys
 import os
-import pytest
-import tempfile
-import shutil
-import numpy as np
-import faiss
 
 # Add parent directory to path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from index_service import IndexServiceImpl, ShardIndex
-import vector_service_pb2
+import pytest  # noqa: E402
+import tempfile  # noqa: E402
+import shutil  # noqa: E402
+import numpy as np  # noqa: E402
+import faiss  # noqa: E402
+from index_service import IndexServiceImpl, ShardIndex  # noqa: E402
+import vector_service_pb2  # noqa: E402
 
 
 class MockContext:
@@ -139,7 +139,7 @@ def test_index_service_search_wrong_shard(temp_index_dir):
     )
     context = MockContext()
 
-    response = service.SearchIndex(request, context)
+    service.SearchIndex(request, context)
 
     assert context.code is not None  # Should set error code
     assert "not found" in context.details.lower()
@@ -159,7 +159,7 @@ def test_index_service_search_wrong_dimension(temp_index_dir):
     )
     context = MockContext()
 
-    response = service.SearchIndex(request, context)
+    service.SearchIndex(request, context)
 
     assert context.code is not None
     assert "dimension" in context.details.lower()

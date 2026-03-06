@@ -4,9 +4,7 @@ Generates semantic embeddings using sentence-transformers (all-MiniLM-L6-v2).
 Supports single and batch embedding generation.
 """
 import logging
-from typing import List
 import grpc
-import numpy as np
 from sentence_transformers import SentenceTransformer
 import vector_service_pb2
 import vector_service_pb2_grpc
@@ -34,7 +32,8 @@ class EmbeddingServiceImpl(vector_service_pb2_grpc.EmbeddingServiceServicer):
         logger.info(f"Loading embedding model: {model_name}")
         self.model = SentenceTransformer(model_name)
         self.model_name = model_name
-        logger.info(f"Model {model_name} loaded successfully. Embedding dimension: {self.model.get_sentence_embedding_dimension()}")
+        dim = self.model.get_sentence_embedding_dimension()
+        logger.info(f"Model {model_name} loaded successfully. Embedding dimension: {dim}")
 
     def GenerateEmbedding(self, request, context):
         """

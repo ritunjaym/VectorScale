@@ -33,15 +33,15 @@ import vector_service_pb2          # noqa: E402
 import vector_service_pb2_grpc     # noqa: E402
 
 # ── Configuration ─────────────────────────────────────────────────────────────
-SIDECAR_ADDR    = os.getenv("SIDECAR_ADDR", "localhost:50051")
-TAXI_DATA_URL   = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet"
-RAW_FILE        = os.path.join(REPO_ROOT, "data", "raw", "yellow_tripdata_2023-01.parquet")
-DEMO_FILE       = os.path.join(REPO_ROOT, "data", "demo", "taxi_trips_10k.parquet")
-INDEX_DIR       = os.path.join(REPO_ROOT, "data", "indexes")
-INDEX_FILE      = os.path.join(INDEX_DIR, "nyc_taxi_2023.index")
-SAMPLE_SIZE     = 10_000
-RANDOM_SEED     = 42
-BATCH_SIZE      = 256   # texts per gRPC batch call
+SIDECAR_ADDR = os.getenv("SIDECAR_ADDR", "localhost:50051")
+TAXI_DATA_URL = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet"
+RAW_FILE = os.path.join(REPO_ROOT, "data", "raw", "yellow_tripdata_2023-01.parquet")
+DEMO_FILE = os.path.join(REPO_ROOT, "data", "demo", "taxi_trips_10k.parquet")
+INDEX_DIR = os.path.join(REPO_ROOT, "data", "indexes")
+INDEX_FILE = os.path.join(INDEX_DIR, "nyc_taxi_2023.index")
+SAMPLE_SIZE = 10_000
+RANDOM_SEED = 42
+BATCH_SIZE = 256  # texts per gRPC batch call
 
 
 # ── Step 1: Download and sample ───────────────────────────────────────────────
@@ -60,7 +60,7 @@ def download_sample() -> str:
             downloaded = block * block_size
             if total > 0:
                 pct = min(100, downloaded * 100 // total)
-                mb  = downloaded / 1_048_576
+                mb = downloaded / 1_048_576
                 print(f"\r  {pct}% ({mb:.0f} MB)", end="", flush=True)
 
         urllib.request.urlretrieve(TAXI_DATA_URL, RAW_FILE, reporthook=report)
@@ -107,12 +107,12 @@ def _check_sidecar():
 
 def _make_text(row) -> str:
     """Convert a taxi trip row into a natural-language string for embedding."""
-    pu         = int(row.get('PULocationID', 0))
-    do         = int(row.get('DOLocationID', 0))
-    dist       = float(row.get('trip_distance', 0))
-    fare       = float(row.get('fare_amount', 0))
+    pu = int(row.get('PULocationID', 0))
+    do = int(row.get('DOLocationID', 0))
+    dist = float(row.get('trip_distance', 0))
+    fare = float(row.get('fare_amount', 0))
     passengers = int(row.get('passenger_count', 1))
-    pax        = "passengers" if passengers > 1 else "passenger"
+    pax = "passengers" if passengers > 1 else "passenger"
     return (
         f"Yellow taxi trip from zone {pu} to zone {do}, "
         f"{dist:.1f} miles, ${fare:.2f} fare, {passengers} {pax}"
@@ -129,14 +129,14 @@ def generate_embeddings(demo_file: str) -> np.ndarray:
     texts = [_make_text(row) for _, row in df.iterrows()]
 
     channel = grpc.insecure_channel(SIDECAR_ADDR)
-    stub    = vector_service_pb2_grpc.EmbeddingServiceStub(channel)
+    stub = vector_service_pb2_grpc.EmbeddingServiceStub(channel)
 
     all_embeddings = []
     total = len(texts)
 
     for start in range(0, total, BATCH_SIZE):
         batch = texts[start : start + BATCH_SIZE]
-        request  = vector_service_pb2.EmbeddingBatchRequest(texts=batch)
+        request = vector_service_pb2.EmbeddingBatchRequest(texts=batch)
         response = stub.GenerateEmbeddingBatch(request)
         for emb in response.embeddings:
             all_embeddings.append(emb.vector)  # field name is `vector`
@@ -163,11 +163,11 @@ def build_faiss_index(embeddings: np.ndarray) -> str:
     # For 10K vectors: nlist=32 gives ~300 vectors/cell (√10K ≈ 100, but 32
     # is safer for training), m=8 subvectors × 8 bits = 1 byte/subvector
     nlist = 32
-    m     = 8
+    m = 8
     nbits = 8
 
     quantizer = faiss.IndexFlatL2(d)
-    index     = faiss.IndexIVFPQ(quantizer, d, nlist, m, nbits)
+    index = faiss.IndexIVFPQ(quantizer, d, nlist, m, nbits)
 
     print(f"  Training IVF{nlist},PQ{m}×{nbits} on {n:,} vectors...")
     index.train(embeddings)
@@ -208,7 +208,7 @@ def main():
         return
 
     try:
-        demo_file  = download_sample()
+        demo_file = download_sample()
         embeddings = generate_embeddings(demo_file)
         build_faiss_index(embeddings)
 

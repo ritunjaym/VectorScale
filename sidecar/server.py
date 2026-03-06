@@ -81,7 +81,7 @@ def serve():
     signal.signal(signal.SIGTERM, signal_handler)
 
     logger.info(f"Starting gRPC server on port {GRPC_PORT}")
-    logger.info(f"Configuration:")
+    logger.info("Configuration:")
     logger.info(f"  - Embedding Model: {EMBEDDING_MODEL}")
     logger.info(f"  - Index Directory: {INDEX_DIR}")
     logger.info(f"  - Max Workers: {MAX_WORKERS}")

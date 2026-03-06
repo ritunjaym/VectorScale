@@ -4,14 +4,14 @@ Tests embedding generation for single and batch requests.
 """
 import sys
 import os
-import pytest
-import numpy as np
 
 # Add parent directory to path so we can import sidecar modules
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from embedding_service import EmbeddingServiceImpl
-import vector_service_pb2
+import pytest  # noqa: E402
+import numpy as np  # noqa: E402
+from embedding_service import EmbeddingServiceImpl  # noqa: E402
+import vector_service_pb2  # noqa: E402
 
 
 class MockContext:
@@ -58,7 +58,7 @@ def test_generate_embedding_empty_text(embedding_service):
     request = vector_service_pb2.EmbeddingRequest(text="", model_name="all-MiniLM-L6-v2")
     context = MockContext()
 
-    response = embedding_service.GenerateEmbedding(request, context)
+    embedding_service.GenerateEmbedding(request, context)
 
     assert context.code is not None  # Should set error code
     assert "empty" in context.details.lower()
@@ -105,7 +105,7 @@ def test_generate_embedding_batch_empty(embedding_service):
     request = vector_service_pb2.EmbeddingBatchRequest(texts=[])
     context = MockContext()
 
-    response = embedding_service.GenerateEmbeddingBatch(request, context)
+    embedding_service.GenerateEmbeddingBatch(request, context)
 
     assert context.code is not None
     assert "required" in context.details.lower() or "empty" in context.details.lower()

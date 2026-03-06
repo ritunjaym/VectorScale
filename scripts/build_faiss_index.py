@@ -143,7 +143,7 @@ def save_index(index, output_path):
 
     # Print index statistics
     file_size_mb = os.path.getsize(output_path) / (1024 * 1024)
-    logger.info(f"Index saved successfully!")
+    logger.info("Index saved successfully!")
     logger.info(f"  - File size: {file_size_mb:.2f} MB")
     logger.info(f"  - Total vectors: {index.ntotal}")
     logger.info(f"  - Dimension: {index.d}")

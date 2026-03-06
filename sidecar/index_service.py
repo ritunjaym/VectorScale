@@ -6,7 +6,7 @@ Supports multi-shard indexing, hot reloading, and configurable search parameters
 import logging
 import os
 import threading
-from typing import Dict, Optional
+from typing import Dict
 import grpc
 import faiss
 import numpy as np
@@ -183,7 +183,9 @@ class IndexServiceImpl(vector_service_pb2_grpc.IndexServiceServicer):
 
             if query_vector.shape[0] != shard.dimension:
                 context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-                context.set_details(f"Query dimension {query_vector.shape[0]} does not match index dimension {shard.dimension}")
+                context.set_details(
+                    f"Query dimension {query_vector.shape[0]} does not match index dimension {shard.dimension}"
+                )
                 return vector_service_pb2.SearchResponse()
 
             top_k = request.top_k if request.top_k > 0 else 10

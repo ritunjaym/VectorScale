@@ -200,7 +200,9 @@ def main():
 
         # Show sample results
         logger.info("Sample embedded records:")
-        df_final.select("PULocationID", "DOLocationID", "trip_distance", "fare_amount", "embedding_dimension").show(5, truncate=False)
+        df_final.select(
+            "PULocationID", "DOLocationID", "trip_distance", "fare_amount", "embedding_dimension"
+        ).show(5, truncate=False)
 
     except Exception as e:
         logger.error(f"Job failed with error: {e}", exc_info=True)
