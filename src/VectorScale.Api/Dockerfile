@@ -1,5 +1,5 @@
 # ══════════════════════════════════════════════════════════════════════════════
-# Multi-Stage Dockerfile for VectorCatalog.Api (.NET 8)
+# Multi-Stage Dockerfile for VectorScale.Api (.NET 8)
 # Optimized for layer caching and small final image size
 # ══════════════════════════════════════════════════════════════════════════════
 
@@ -11,13 +11,13 @@ WORKDIR /src
 COPY . .
 
 # Restore and build in Release configuration
-WORKDIR "/src/src/VectorCatalog.Api"
-RUN dotnet restore "VectorCatalog.Api.csproj"
-RUN dotnet build "VectorCatalog.Api.csproj" -c Release -o /app/build
+WORKDIR "/src/src/VectorScale.Api"
+RUN dotnet restore "VectorScale.Api.csproj"
+RUN dotnet build "VectorScale.Api.csproj" -c Release -o /app/build
 
 # ── Stage 2: Publish application ──────────────────────────────────────────────
 FROM build AS publish
-RUN dotnet publish "VectorCatalog.Api.csproj" -c Release -o /app/publish
+RUN dotnet publish "VectorScale.Api.csproj" -c Release -o /app/publish
 
 # ── Stage 3: Final runtime image ──────────────────────────────────────────────
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
@@ -51,4 +51,4 @@ ENV ASPNETCORE_URLS=http://+:8080 \
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:8080/health/live || exit 1
 
-ENTRYPOINT ["dotnet", "VectorCatalog.Api.dll"]
+ENTRYPOINT ["dotnet", "VectorScale.Api.dll"]
