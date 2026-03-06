@@ -37,13 +37,4 @@ public class ShardRouter
         return defaultShardKey;
     }
 
-    /// <summary>
-    /// For multi-shard fan-out: returns all shard keys to query in parallel.
-    /// Currently returns a single shard. Fan-out merge is not yet implemented.
-    /// </summary>
-    public IReadOnlyList<string> ResolveShardKeys(string? requestedShardKey, string defaultShardKey)
-    {
-        var key = ResolveShardKey(requestedShardKey, defaultShardKey);
-        return [key]; // Fan-out across multiple shards is not yet implemented
-    }
 }

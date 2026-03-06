@@ -95,10 +95,20 @@ jobs:
         run: |
           python -m grpc_tools.protoc -I./protos --python_out=. --grpc_python_out=. protos/vector_service.proto
 
-      - name: Run pytest
+      - name: Run pytest with coverage
         working-directory: ./sidecar
         run: |
-          python -m pytest tests/ -v --tb=short --color=yes
+          pip install pytest-cov
+          python -m pytest tests/ -v --tb=short --color=yes \
+            --cov=. --cov-report=xml:coverage.xml --cov-report=term-missing \
+            --ignore=tests
+
+      - name: Upload Python coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./sidecar/coverage.xml
+          flags: python
+          fail_ci_if_error: false
 
   # ══════════════════════════════════════════════════════════════════════════
   # Job 3: Docker Build (API)

@@ -4,6 +4,8 @@
 [![codecov](https://codecov.io/gh/ritunjaym/vector-catalog-service/branch/main/graph/badge.svg)](https://codecov.io/gh/ritunjaym/vector-catalog-service)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+> **Coverage:** C# and Python tracked via Codecov. To activate the badge: visit [codecov.io](https://codecov.io), log in with GitHub, enable this repository, then re-run CI — the badge updates automatically after the first successful upload.
+
 > **Production-ready microservice for vector search over 100M+ NYC Taxi records**
 > Demonstrates C#/.NET 8, Python gRPC, FAISS, Delta Lake, OpenTelemetry, and cloud-native architecture
 
