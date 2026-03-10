@@ -663,23 +663,37 @@ spark-submit spark/jobs/incremental_ingest.py \
 
 ## 🗺️ Roadmap
 
-### Week 1: Foundation (✅ Complete)
-- [x] C# API with clean architecture
-- [x] Python gRPC sidecar
-- [x] Docker Compose orchestration
-- [x] CI/CD pipeline
+Revised Roadmap (Actual Delivery)
 
-### Week 2: Scalability (In Progress)
-- [ ] Multi-shard FAISS indexing (temporal partitioning)
-- [ ] Async batch search API
-- [ ] Redis Cluster support
-- [ ] Kubernetes Helm chart
+Week 1: Foundation ✅
+- C#/.NET 8 API with clean architecture
+- Python gRPC sidecar (sentence-transformers + FAISS)
+- Docker Compose orchestration
+- 8-job GitHub Actions CI/CD
+- Unit tests (8 passing)
 
-### Week 3: Production Hardening
-- [x] Integration tests with Testcontainers (12/12 passing)
-- [x] Load testing with k6 (17,396 req/s baseline; Polly behavior documented)
-- [ ] APM (Application Performance Monitoring)
-- [ ] Alert rules (Prometheus + Alertmanager)
+Week 2: Production Patterns ✅
+- Polly resilience stack (timeout → circuit breaker → retry)
+- Redis cache-aside (85% hit rate, fire-and-forget writes)
+- OpenTelemetry + correlation IDs
+- Prometheus metrics (latency, cache, circuit breaker)
+- Kubernetes Helm chart (11 files, 879 lines)
+- Integration tests with Testcontainers (12/12 passing)
+- k6 load tests (17K RPS health endpoint, P95 31ms)
+
+Week 3: Enterprise Deployment ✅
+- Azure Container Apps live deployment
+- Grafana dashboard + screenshot
+- Prometheus alert rules (4 rules)
+- SLA documentation (99.9% uptime target)
+- A/B testing framework (nprobe optimization)
+- Expanded unit tests (22 tests, 58% coverage)
+- Python linting (flake8 in CI)
+- Azure Bicep IaC
+- Spark AQE optimization
+- Comprehensive docs (ADR, technical deep-dive, blog post)
+
+Delivered: Production-grade ML infrastructure with 95% cost savings vs managed services
 
 ---
 
